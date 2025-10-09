@@ -9,6 +9,7 @@ function App() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+
     if (movieName === "") {
       setError("Please type something");
       return;
@@ -27,7 +28,7 @@ function App() {
       if (data.Response === "True") {
         setMovies(data.Search);
       } else {
-        setError("No movies found 😢");
+        setError("No movies found");
       }
     } catch (err) {
       setError("Error fetching movies");
@@ -38,17 +39,20 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">🎬 Movie Database</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">Movie Database</h1>
 
       <form onSubmit={handleSearch} className="flex justify-center gap-2 mb-5">
         <input
           type="text"
-          placeholder="Search movie..."
+          placeholder="Search for a movie..."
           value={movieName}
           onChange={(e) => setMovieName(e.target.value)}
           className="p-2 text-black rounded"
         />
-        <button type="submit" className="bg-blue-600 px-4 py-2 rounded">
+        <button
+          type="submit"
+          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+        >
           Search
         </button>
       </form>
@@ -60,7 +64,11 @@ function App() {
         {movies.map((movie) => (
           <div key={movie.imdbID} className="bg-gray-800 p-3 rounded">
             <img
-              src={movie.Poster !== "N/A" ? movie.Poster : ""}
+              src={
+                movie.Poster !== "N/A"
+                  ? movie.Poster
+                  : "https://via.placeholder.com/150"
+              }
               alt={movie.Title}
               className="w-full h-64 object-cover rounded"
             />
@@ -68,6 +76,12 @@ function App() {
             <p className="text-gray-400 text-xs">{movie.Year}</p>
           </div>
         ))}
+
+        {movies.length === 0 && !loading && !error && (
+          <p className="text-center text-gray-400 mt-6">
+            Try searching for a movie name above
+          </p>
+        )}
       </div>
     </div>
   );

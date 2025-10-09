@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Movie Database</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">Gbemi's Movies</h1>
 
       <form onSubmit={handleSearch} className="flex justify-center gap-2 mb-5">
         <input
@@ -79,7 +79,7 @@ function App() {
 
         {movies.length === 0 && !loading && !error && (
           <p className="text-center text-gray-400 mt-6">
-            Try searching for a movie name above
+            What are we watching today? Search for a movie!
           </p>
         )}
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-function MovieList({ movies }) {
+function MovieList({ movies, onMovieClick }) {
   if (movies.length === 0) {
     return (
       <p className="text-center text-gray-400 mt-6">
@@ -12,7 +12,11 @@ function MovieList({ movies }) {
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {movies.map((movie) => (
-        <div key={movie.imdbID} className="bg-gray-800 p-3 rounded">
+        <div
+          key={movie.imdbID}
+          className="bg-gray-800 p-3 rounded cursor-pointer hover:bg-gray-700"
+          onClick={() => onMovieClick(movie.imdbID)}
+        >
           <img
             src={
               movie.Poster !== "N/A"

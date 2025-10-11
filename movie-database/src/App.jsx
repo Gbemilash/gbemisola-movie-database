@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import "./index.css";
+import MovieList from "./components/MovieList";
+import MovieDetails from "./components/MovieDetails";
 
 function App() {
   const [movieName, setMovieName] = useState("");
   const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSearch = async (e) => {
     e.preventDefault();
-
     if (movieName === "") {
       setError("Please type something");
       return;
@@ -18,6 +20,7 @@ function App() {
     setLoading(true);
     setError("");
     setMovies([]);
+    setSelectedMovie(null);
 
     try {
       const res = await fetch(
@@ -32,6 +35,21 @@ function App() {
       }
     } catch (err) {
       setError("Error fetching movies");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMovieClick = async (id) => {
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `https://www.omdbapi.com/?apikey=3e1e8179&i=${id}&plot=full`
+      );
+      const data = await res.json();
+      setSelectedMovie(data);
+    } catch {
+      setError("Error fetching movie details");
     } finally {
       setLoading(false);
     }
@@ -60,29 +78,13 @@ function App() {
       {loading && <p className="text-center">Loading...</p>}
       {error && <p className="text-center text-red-400">{error}</p>}
 
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {movies.map((movie) => (
-          <div key={movie.imdbID} className="bg-gray-800 p-3 rounded">
-            <img
-              src={
-                movie.Poster !== "N/A"
-                  ? movie.Poster
-                  : "https://via.placeholder.com/150"
-              }
-              alt={movie.Title}
-              className="w-full h-64 object-cover rounded"
-            />
-            <h3 className="mt-2 text-sm font-semibold">{movie.Title}</h3>
-            <p className="text-gray-400 text-xs">{movie.Year}</p>
-          </div>
-        ))}
+      {!loading && !error && !selectedMovie && (
+        <MovieList movies={movies} onMovieClick={handleMovieClick} />
+      )}
 
-        {movies.length === 0 && !loading && !error && (
-          <p className="text-center text-gray-400 mt-6">
-            What are we watching today? Search for a movie!
-          </p>
-        )}
-      </div>
+      {selectedMovie && (
+        <MovieDetails movie={selectedMovie} onBack={() => setSelectedMovie(null)} />
+      )}
     </div>
   );
 }

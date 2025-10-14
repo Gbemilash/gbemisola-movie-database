@@ -73,13 +73,13 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
+    <div className="min-h-screen bg-gray-900 text-white p-6 pt-8">
       <h1 className="text-3xl font-bold text-center mb-6">Gbemi's Movies</h1>
 
       <form onSubmit={handleSearch} className="flex justify-center gap-2 mb-5">
         <input
           type="text"
-          placeholder="What do you want to watch?..."
+          placeholder="Search?..."
           value={movieName}
           onChange={(e) => setMovieName(e.target.value)}
           className="p-2 text-black rounded"

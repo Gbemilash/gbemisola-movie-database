@@ -88,7 +88,7 @@ function App() {
           type="submit"
           className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500"
         >
-          Find a Movie
+          Find my Movie
         </button>
       </form>
 

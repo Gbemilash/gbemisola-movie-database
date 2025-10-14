@@ -79,7 +79,7 @@ function App() {
       <form onSubmit={handleSearch} className="flex justify-center gap-2 mb-5">
         <input
           type="text"
-          placeholder="Search for a movie..."
+          placeholder="What do you want to watch?..."
           value={movieName}
           onChange={(e) => setMovieName(e.target.value)}
           className="p-2 text-black rounded"
@@ -88,7 +88,7 @@ function App() {
           type="submit"
           className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
         >
-          Search
+          Find a Movie
         </button>
       </form>
 

@@ -12,7 +12,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Load favorites from localStorage
   useEffect(() => {
     const storedFavs = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavs);
@@ -72,23 +71,29 @@ function App() {
     }
   };
 
+  const removeFromFavorites = (id) => {
+    const updated = favorites.filter((fav) => fav.imdbID !== id);
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
+  };
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6 pt-8">
+    <div className="min-h-screen bg-gray-900 text-white p-6">
       <h1 className="text-3xl font-bold text-center mb-6">Gbemi's Movies</h1>
 
       <form onSubmit={handleSearch} className="flex justify-center gap-2 mb-5">
         <input
           type="text"
-          placeholder="Search?..."
+          placeholder="Search for a movie..."
           value={movieName}
           onChange={(e) => setMovieName(e.target.value)}
           className="p-2 text-black rounded"
         />
         <button
           type="submit"
-          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500"
+          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
         >
-          Find my Movie
+          Search
         </button>
       </form>
 
@@ -97,11 +102,11 @@ function App() {
 
       {!loading && !error && !selectedMovie && (
         <>
-          <MovieList
-            movies={movies}
-            onMovieClick={handleMovieClick}
+          <MovieList movies={movies} onMovieClick={handleMovieClick} />
+          <FavoritesList
+            favorites={favorites}
+            onRemove={removeFromFavorites}
           />
-          <FavoritesList favorites={favorites} />
         </>
       )}
 

@@ -13,14 +13,16 @@ function App() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const storedFavs = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(storedFavs);
+    const saved = localStorage.getItem("favorites");
+    if (saved) {
+      setFavorites(JSON.parse(saved));
+    }
   }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (movieName === "") {
-      setError("Please type something");
+    if (movieName.trim() === "") {
+      setError("Please enter a movie name");
       return;
     }
 
@@ -41,7 +43,7 @@ function App() {
         setError("No movies found");
       }
     } catch (err) {
-      setError("Error fetching movies");
+      setError("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -51,20 +53,20 @@ function App() {
     setLoading(true);
     try {
       const res = await fetch(
-        `https://www.omdbapi.com/?apikey=3e1e8179&i=${id}&plot=full`
+        `https://www.omdbapi.com/?apikey=3e1e8179&i=${id}&plot=short`
       );
       const data = await res.json();
       setSelectedMovie(data);
-    } catch {
-      setError("Error fetching movie details");
+    } catch (err) {
+      setError("Error loading movie");
     } finally {
       setLoading(false);
     }
   };
 
   const addToFavorites = (movie) => {
-    const exists = favorites.find((fav) => fav.imdbID === movie.imdbID);
-    if (!exists) {
+    const alreadyAdded = favorites.find((fav) => fav.imdbID === movie.imdbID);
+    if (!alreadyAdded) {
       const updated = [...favorites, movie];
       setFavorites(updated);
       localStorage.setItem("favorites", JSON.stringify(updated));
@@ -78,47 +80,54 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Gbemi's Movies</h1>
+    <div className="min-h-screen bg-black text-white px-6 py-8">
+      <h1 className="text-4xl font-bold text-center mb-6">
+        Gbemi's Movie Hub
+      </h1>
 
-      <form onSubmit={handleSearch} className="flex justify-center gap-2 mb-5">
+      <form
+        onSubmit={handleSearch}
+        className="flex justify-center flex-wrap gap-2 mb-8"
+      >
         <input
           type="text"
-          placeholder="Search for a movie..."
+          placeholder="Search movie..."
           value={movieName}
           onChange={(e) => setMovieName(e.target.value)}
-          className="p-2 text-black rounded"
+          className="p-2 w-60 sm:w-80 text-black rounded"
         />
         <button
           type="submit"
-          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500"
         >
           Search
         </button>
       </form>
 
-      {loading && <p className="text-center">Loading...</p>}
+      {loading && <p className="text-center text-gray-400">Loading...</p>}
       {error && <p className="text-center text-red-400">{error}</p>}
 
       {!loading && !error && !selectedMovie && (
         <>
           <MovieList movies={movies} onMovieClick={handleMovieClick} />
-          <FavoritesList
-            favorites={favorites}
-            onRemove={removeFromFavorites}
-          />
+          {favorites.length > 0 && (
+            <FavoritesList
+              favorites={favorites}
+              onRemove={removeFromFavorites}
+            />
+          )}
         </>
       )}
 
       {selectedMovie && (
-        <div>
+        <div className="mt-6">
           <MovieDetails
             movie={selectedMovie}
             onBack={() => setSelectedMovie(null)}
           />
           <button
             onClick={() => addToFavorites(selectedMovie)}
-            className="bg-green-600 px-4 py-2 rounded mt-4 hover:bg-green-700"
+            className="bg-green-600 px-4 py-2 rounded mt-4 hover:bg-green-500"
           >
             Add to Favorites
           </button>

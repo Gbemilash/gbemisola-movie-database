@@ -1,2 +1,10 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+body {
+  background-color: black;
+  color: white;
+  margin: 0;
+  font-family: Arial, sans-serif;;
+}

@@ -104,7 +104,7 @@ function App() {
         </button>
       </form>
 
-      {loading && <p className="text-center text-gray-400">Loading...</p>}
+      {loading && <p className="text-center text-gray-400 animate-pulse">Loading...</p>}
       {error && <p className="text-center text-red-400">{error}</p>}
 
       {!loading && !error && !selectedMovie && (

@@ -80,7 +80,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-8">
+    <div className="flex flex-col md:flex-row gap-4 items-center md:items-start">
       <h1 className="text-4xl font-bold text-center mb-6">
         Gbemi's Movie Hub
       </h1>

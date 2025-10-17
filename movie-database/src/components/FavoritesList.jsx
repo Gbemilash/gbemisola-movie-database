@@ -38,5 +38,4 @@ function FavoritesList({ favorites, onRemove }) {
     </div>
   );
 }
-
 export default FavoritesList;

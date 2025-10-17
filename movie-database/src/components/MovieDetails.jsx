@@ -42,5 +42,4 @@ function MovieDetails({ movie, onBack }) {
     </div>
   );
 }
-
 export default MovieDetails;

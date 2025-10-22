@@ -56,7 +56,8 @@ Users can also add movies to favourites
 
 ## Known Issues
 
-My layout could still be improved for smaller screens
+My layout could still be improved for smaller screens 
+The design is currently very basic so i would like to improve it a whole lot more but right now I'm unable to
 I battled with my Movie list showing in a vertical layout and not horizontal as planned
 
 ## Future Improvements

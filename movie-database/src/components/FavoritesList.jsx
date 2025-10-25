@@ -1,36 +1,62 @@
 import React from "react";
+import MovieCarousel from "./MovieCarousel";
 
-function FavoritesList({ favorites, onRemove }) {
-  if (favorites.length === 0) {
-    return (
-      <p className="text-center text-gray-400 mt-6">
-        No favorites added yet.
-      </p>
-    );
-  }
+function FavoritesList({ favorites, onRemove, onMovieClick }) {
+  if (!favorites || favorites.length === 0) return null;
 
   return (
-    <div className="mt-6">
-      <h2 className="text-2xl font-bold mb-3">My Favorite Movies</h2>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div style={{ marginBottom: "30px" }}>
+      <h2 style={{ marginLeft: "10px", fontSize: "20px", marginBottom: "10px" }}>
+        My Favorites
+      </h2>
+
+      <div
+        style={{
+          display: "flex",
+          overflowX: "auto",
+          padding: "10px",
+          gap: "10px",
+        }}
+      >
         {favorites.map((movie) => (
-          <div key={movie.imdbID} className="bg-gray-800 p-3 rounded">
+          <div
+            key={movie.imdbID}
+            style={{
+              position: "relative",
+              cursor: "pointer",
+              minWidth: "150px",
+              textAlign: "center",
+            }}
+          >
             <img
-              src={
-                movie.Poster !== "N/A"
-                  ? movie.Poster
-                  : "https://via.placeholder.com/150"
-              }
+              src={movie.Poster !== "N/A" ? movie.Poster : "no-image.png"}
               alt={movie.Title}
-              className="w-full h-64 object-cover rounded"
+              onClick={() => onMovieClick(movie.imdbID)}
+              style={{
+                width: "150px",
+                height: "220px",
+                borderRadius: "5px",
+              }}
             />
-            <h3 className="mt-2 text-sm font-semibold">{movie.Title}</h3>
-            <p className="text-gray-400 text-xs">{movie.Year}</p>
+            <p style={{ marginTop: "5px", fontSize: "14px" }}>{movie.Title}</p>
+
+            {/* My Remove button overlay */}
             <button
               onClick={() => onRemove(movie.imdbID)}
-              className="bg-red-600 px-3 py-1 mt-2 rounded hover:bg-red-700 text-sm"
+              style={{
+                position: "absolute",
+                top: "5px",
+                right: "5px",
+                backgroundColor: "rgba(220, 38, 38, 0.8)", 
+                color: "white",
+                border: "none",
+                borderRadius: "3px",
+                padding: "2px 5px",
+                fontSize: "12px",
+                cursor: "pointer",
+              }}
             >
-              Remove
+              X
             </button>
           </div>
         ))}
@@ -38,4 +64,5 @@ function FavoritesList({ favorites, onRemove }) {
     </div>
   );
 }
+
 export default FavoritesList;
